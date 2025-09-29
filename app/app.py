@@ -7,8 +7,8 @@ DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://postgres:postgres@db
 app.config['DATABASE_URL'] = DATABASE_URL
 
 # Initialize DB on startup (safe for dev: creates table if not exists)
-with app.app_context():
-    init_db(app.config['DATABASE_URL'])
+#with app.app_context():
+ #   init_db(app.config['DATABASE_URL'])
 
 @app.route("/health")
 def health():
