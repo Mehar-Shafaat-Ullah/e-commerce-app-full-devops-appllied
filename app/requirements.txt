@@ -1,2 +1,0 @@
-pip install Flask==2.3.3
-python app.py
