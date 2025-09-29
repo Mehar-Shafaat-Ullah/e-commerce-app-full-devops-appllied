@@ -15,7 +15,7 @@ jobs:
     - name: Deploy App
       run: |
         # Stop existing containers
-        docker-compose down || true
+        docker-compose down
         
         # Build and start fresh
         docker-compose up -d --build
