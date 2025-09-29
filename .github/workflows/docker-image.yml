@@ -1,4 +1,4 @@
-name: Deploy to Local
+name: Deploy to Local and Push to Docker Hub
 
 on:
   push:
@@ -6,20 +6,17 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted  # ← This makes it run on your machine
+    runs-on: self-hosted
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Deploy App
+    - name: Build and push Flask app image
       run: |
-        # Stop existing containers
-        docker-compose down
+        # Build the Flask app image with Docker Hub name
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/e-commerce-app:latest .
         
-        # Build and start fresh
-        docker-compose up -d --build
-
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
@@ -30,5 +27,12 @@ jobs:
       run: |
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/e-commerce-app:latest
         
-        # Keep it running (don't stop)
+    - name: Deploy with Docker Compose
+      run: |
+        # Stop existing containers
+        docker-compose down
+        
+        # Build and start fresh (will use the image we just built)
+        docker-compose up -d --build
+        
         echo "🎉 App deployed! Access at: http://localhost"
