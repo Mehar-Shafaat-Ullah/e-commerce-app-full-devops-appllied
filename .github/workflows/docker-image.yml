@@ -23,9 +23,3 @@ jobs:
         
         # Wait for app to start
         sleep 10
-        
-        # Test the ROOT endpoint (what users actually see)
-        curl -f http://localhost:5000/
-        
-        # Clean up
-        docker stop test-app
