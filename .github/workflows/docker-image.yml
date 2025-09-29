@@ -12,20 +12,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Build and Test Flask App
+    - name: Build Docker image
       run: |
-        # Build the Docker image
         docker build -t e-commerce-app .
         
-        # Run the Flask app
-        docker run -d --name flask-app -p 5000:5000 e-commerce-app
+    - name: Test the actual frontend
+      run: |
+        # Run the app
+        docker run -d --name test-app -p 5000:5000 e-commerce-app
         
         # Wait for app to start
         sleep 10
         
-        # Test the health endpoint directly
-        curl -f http://localhost:5000/health
+        # Test the ROOT endpoint (what users actually see)
+        curl -f http://localhost:5000/
         
         # Clean up
-        docker stop flask-app
-        docker rm flask-app
+        docker stop test-app
