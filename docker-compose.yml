@@ -8,7 +8,7 @@ services:
       - "5000"
     environment:
       - FLASK_ENV=production
-    # Don't publish port 5000 - only Nginx will access it internally
+    #   Don't publish port 5000 - only Nginx will access it internally
     networks:
       - app-network
 
