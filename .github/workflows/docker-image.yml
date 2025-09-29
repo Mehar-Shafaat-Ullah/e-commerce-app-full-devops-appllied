@@ -12,22 +12,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        
-    - name: Install dependencies
+    - name: Build and Test with Docker Compose
       run: |
-        pip install -r requirements.txt
+        # Build and start all services (Flask + Nginx)
+        docker-compose up -d --build
         
-    - name: Build Docker image
-      run: |
-        docker build -t e-commerce-app .
+        # Wait for services to start
+        sleep 10
         
-    - name: Test if app runs
-      run: |
-        docker run -d --name test-app -p 5000:5000 e-commerce-app
-        sleep 5
-        curl -f http://localhost:5000/health || exit 1
-        docker stop test-app
+        # Test if app is accessible through Nginx
+        curl -f http://localhost:80/health
+        
+        # Test the main page
+        curl -f http://localhost:80/
+        
+        # Stop everything
+        docker-compose down
