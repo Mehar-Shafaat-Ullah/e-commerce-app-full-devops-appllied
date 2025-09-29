@@ -1,18 +1,33 @@
-name: Docker Image CI
+name: Simple CI/CD
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-
-  build:
-
+  build-and-test:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: Build Docker image
+      run: |
+        docker build -t e-commerce-app .
+        
+    - name: Test if app runs
+      run: |
+        docker run -d --name test-app -p 5000:5000 e-commerce-app
+        sleep 5
+        curl -f http://localhost:5000/health || exit 1
+        docker stop test-app
