@@ -1,25 +1,24 @@
-name: Simple CI/CD
+name: Deploy to Local
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: self-hosted  # ← This makes it run on your machine
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Build Docker image
+    - name: Deploy App
       run: |
-        docker build -t e-commerce-app .
+        # Stop existing containers
+        docker-compose down || true
         
-    - name: Test the actual frontend
-      run: |
-        # Run the app
-        docker run -d --name test-app -p 5000:5000 e-commerce-app
+        # Build and start fresh
+        docker-compose up -d --build
         
-        # Wait for app to start
-        sleep 10
+        # Keep it running (don't stop)
+        echo "🎉 App deployed! Access at: http://localhost"
