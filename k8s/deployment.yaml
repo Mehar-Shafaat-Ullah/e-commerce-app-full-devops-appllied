@@ -7,10 +7,10 @@ spec:
   selector:
     matchLabels:
       app: product-service
-  template:
-    metadata:
-      labels:
-        app: product-service
+  #template:
+   # metadata:
+    #  labels:
+     #   app: product-service
     spec:
       containers:
       - name: product-service
