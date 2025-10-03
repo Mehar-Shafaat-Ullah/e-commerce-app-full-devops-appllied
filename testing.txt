@@ -1,3 +1,2 @@
 testing 
-testing ap working fine after applying evrything 
-
+testing ap working fine after applying DevOps practics
