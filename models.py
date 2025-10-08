@@ -36,6 +36,7 @@ class Product:
                 return product
         return None
 
+    
     @staticmethod
     def update(db_url, id, name=None, price=None):
         for product in _mock_products:
