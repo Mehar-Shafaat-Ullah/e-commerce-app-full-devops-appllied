@@ -1,4 +1,5 @@
 # Mock database implementation - no PostgreSQL required
+
 class Product:
     def __init__(self, id, name, price):
         self.id = id
