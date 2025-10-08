@@ -63,6 +63,7 @@ _mock_products = [
     Product(3, "Mechanical Keyboard", 79.99),
     Product(4, "Monitor", 199.99)
 ]
+
 _next_id = 5
 
 def get_db():
